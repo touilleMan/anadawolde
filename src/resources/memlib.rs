@@ -5,12 +5,10 @@ use std::path::Path;
 use std::mem::size_of;
 use std::convert::TryInto;
 
-pub struct Resources {
-}
 
 #[allow(dead_code)]
 #[derive(Debug)]
-enum MemEntryState {
+pub enum MemEntryState {
     NotNeeded=0,
     Loaded=1,
     LoadMe=2,
@@ -19,29 +17,22 @@ enum MemEntryState {
 
 #[allow(dead_code)]
 #[derive(Debug)]
-struct MemEntry {
-    state: u8,         // 0x00,
-    type_: u8,         // 0x01
-    buf_ptr: u16,      // 0x02
-    unused_4: u16,     // 0x04
-    rank_num: u8,      // 0x06
-    bank_id: u8,       // 0x07
-    bank_offset: u32,  // 0x08
-    unused_c: u16,     // 0x0C
-    packed_size: u16,  // 0x0E
-    unused_10: u16,    // 0x10
-    size: u16,         // 0x12
+pub struct MemEntry {
+    pub state: u8,         // 0x00,
+    pub type_: u8,         // 0x01
+    pub buf_ptr: u16,      // 0x02
+    pub unused_4: u16,     // 0x04
+    pub rank_num: u8,      // 0x06
+    pub bank_id: u8,       // 0x07
+    pub bank_offset: u32,  // 0x08
+    pub unused_c: u16,     // 0x0C
+    pub packed_size: u16,  // 0x0E
+    pub unused_10: u16,    // 0x10
+    pub size: u16,         // 0x12
 }
 
 
-pub fn load_resources(resources_path: &Path) -> io::Result<Resources> {
-    let memlist_path = resources_path.join("MEMLIST.BIN");
-    let _entries = load_memlist(&memlist_path)?;
-    return Ok(Resources{});
-}
-
-
-fn load_memlist(memlist_path: &Path) -> io::Result<Vec<MemEntry>> {
+pub fn load_memlist(memlist_path: &Path) -> io::Result<Vec<MemEntry>> {
     let mut memlist_content = fs::File::open(&memlist_path)?;
 
     let mut entries = Vec::new();
@@ -71,9 +62,4 @@ fn load_memlist(memlist_path: &Path) -> io::Result<Vec<MemEntry>> {
     }
 
     Ok(entries)
-}
-
-
-fn load_bank_entry(entry: &MemEntry, buff: &mut [u8]) -> io::Result<()> {
-    Ok(())
 }
