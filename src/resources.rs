@@ -36,6 +36,12 @@ struct MemEntry {
 
 pub fn load_resources(resources_path: &Path) -> io::Result<Resources> {
     let memlist_path = resources_path.join("MEMLIST.BIN");
+    let _entries = load_memlist(&memlist_path)?;
+    return Ok(Resources{});
+}
+
+
+fn load_memlist(memlist_path: &Path) -> io::Result<Vec<MemEntry>> {
     let mut memlist_content = fs::File::open(&memlist_path)?;
 
     let mut entries = Vec::new();
@@ -64,5 +70,10 @@ pub fn load_resources(resources_path: &Path) -> io::Result<Resources> {
         entries.push(entry);
     }
 
-    return Ok(Resources{});
+    Ok(entries)
+}
+
+
+fn load_bank_entry(entry: &MemEntry, buff: &mut [u8]) -> io::Result<()> {
+    Ok(())
 }
